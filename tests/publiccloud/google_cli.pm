@@ -65,6 +65,7 @@ sub cleanup {
     script_run("gcloud compute instances list | grep '$machine_name'");
     assert_script_run("gcloud compute instances stop $machine_name --zone=europe-west4-a", 240);
     assert_script_run("gcloud compute instances delete $machine_name --zone=europe-west4-a --delete-disks=all --quiet", 240);
+    return 1;
 }
 
 sub test_flags {

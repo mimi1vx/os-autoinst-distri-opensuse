@@ -85,6 +85,7 @@ sub cleanup {
         assert_script_run('tar -zcvf img_proof_results.tar.gz img_proof_results');
         upload_logs('img_proof_results.tar.gz', failok => 1);
     }
+    return 1;
 }
 
 1;
