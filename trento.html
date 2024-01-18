@@ -19,6 +19,7 @@
     <ul>
       <li><a href="#Methods">Methods</a>
         <ul>
+          <li><a href="#clone_trento_deployment">clone_trento_deployment</a></li>
           <li><a href="#get_trento_deployment">get_trento_deployment</a></li>
           <li><a href="#get_resource_group">get_resource_group</a></li>
           <li><a href="#cluster_config">cluster_config</a></li>
@@ -46,6 +47,9 @@
           <li><a href="#cluster_wait_status_by_regex">cluster_wait_status_by_regex</a></li>
           <li><a href="#cluster_trento_net_peering">cluster_trento_net_peering</a></li>
           <li><a href="#podman_self_check">podman_self_check</a></li>
+          <li><a href="#podman_delete_all">podman_delete_all</a></li>
+          <li><a href="#podman_wait">podman_wait</a></li>
+          <li><a href="#podman_exec">podman_exec</a></li>
           <li><a href="#cypress_configs">cypress_configs</a></li>
           <li><a href="#cypress_install_container">cypress_install_container</a></li>
           <li><a href="#cypress_log_upload">cypress_log_upload</a></li>
@@ -55,7 +59,6 @@
       </li>
     </ul>
   </li>
-  <li><a href="#POD-ERRORS">POD ERRORS</a></li>
 </ul><h1>lib/trento.pm</h1>
 
 <h1 id="NAME">NAME</h1>
@@ -75,6 +78,8 @@
 <p>Package with common methods and default or constant values for Trento tests</p>
 
 <h2 id="Methods">Methods</h2>
+
+<h3 id="clone_trento_deployment">clone_trento_deployment</h3>
 
 <p>Clone gitlab.suse.de/qa-css/trento</p>
 
@@ -104,7 +109,7 @@
 
 <h3 id="cluster_config">cluster_config</h3>
 
-<p>Create a variable map and prepare the qe-sap-deployment using it =over 3</p>
+<p>Create a variable map and prepare the qe-sap-deployment using it</p>
 
 <dl>
 
@@ -268,7 +273,7 @@
 
 <h3 id="cluster_wait_status">cluster_wait_status</h3>
 
-<p>This function allow to wait for a specific output for &#39;SAPHanaSR-showAttr&#39;, on one specific remote host. Remotly runs &#39;SAPHanaSR-showAttr&#39; on $host. Runs &#39;SAPHanaSR-showAttr&#39; multiple times in a loop, retying until the output PASS the test &#39;f_status&#39;. The &#39;f_status&#39; test is passed as a &quot;function pointer&quot;.</p>
+<p>This function allow to wait for a specific output for &#39;SAPHanaSR-showAttr&#39;, on one specific remote host. Remotely runs &#39;SAPHanaSR-showAttr&#39; on $host. Runs &#39;SAPHanaSR-showAttr&#39; multiple times in a loop, retying until the output PASS the test &#39;f_status&#39;. The &#39;f_status&#39; test is passed as a &quot;function pointer&quot;.</p>
 
 <p>Usage example: cluster_wait_status($primary_host, sub { ((shift =~ m/.+UNDEFINED.+SFAIL/) &amp;&amp; (shift =~ m/.+PROMOTED.+PRIM/)); });</p>
 
@@ -292,7 +297,7 @@
 
 <h3 id="cluster_wait_status_by_regex">cluster_wait_status_by_regex</h3>
 
-<p>Remotely run &#39;SAPHanaSR-showAttr&#39; in a loop on $host, wait output that matches regular expression =over 3</p>
+<p>Remotely run &#39;SAPHanaSR-showAttr&#39; in a loop on $host, wait output that matches regular expression</p>
 
 <dl>
 
@@ -317,6 +322,46 @@
 <h3 id="podman_self_check">podman_self_check</h3>
 
 <p>Perform some generic checks related to the podman installation itself and the relevant parameters of the current machine environment.</p>
+
+<h3 id="podman_delete_all">podman_delete_all</h3>
+
+<p>Delete all podman containers with name containing CYPRESS_IMAGE_TAG</p>
+
+<h3 id="podman_wait">podman_wait</h3>
+
+<p>Check for status of running container with given name. Polling state until container Status become Exit or timeout. Gently terminate podman in case of timeout. Return the container Exit status.</p>
+
+<dl>
+
+<dt id="NAME---Name-of-the-running-container-used-to-filter-the-podman-ps"><b>NAME</b> - Name of the running container used to filter the podman ps</dt>
+<dd>
+
+</dd>
+<dt id="TIMEOUT---Timeout-waiting-container-to-exit"><b>TIMEOUT</b> - Timeout waiting container to exit</dt>
+<dd>
+
+</dd>
+<dt id="CYPRESS_LOG---File-used-to-redirect-the-cypress-console-output"><b>CYPRESS_LOG</b> - File used to redirect the cypress console output</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h3 id="podman_exec">podman_exec</h3>
+
+<p>Run a command within the running container</p>
+
+<dl>
+
+<dt id="NAME---Name-of-the-running-container-where-to-exec-commands"><b>NAME</b> - Name of the running container where to exec commands</dt>
+<dd>
+
+</dd>
+<dt id="CMD---command-to-run-within-the-container"><b>CMD</b> - command to run within the container</dt>
+<dd>
+
+</dd>
+</dl>
 
 <h3 id="cypress_configs">cypress_configs</h3>
 
@@ -386,32 +431,6 @@
 </dd>
 <dt id="TIMEOUT---Integer-used-as-timeout-for-the-internal-cypress_exec-call"><b>TIMEOUT</b> - Integer used as timeout for the internal <a>cypress_exec</a> call</dt>
 <dd>
-
-</dd>
-</dl>
-
-<h1 id="POD-ERRORS">POD ERRORS</h1>
-
-<p>Hey! <b>The above document had some coding errors, which are explained below:</b></p>
-
-<dl>
-
-<dt id="Around-line-105">Around line 105:</dt>
-<dd>
-
-<p>Unknown directive: =hean3</p>
-
-</dd>
-<dt id="Around-line-239">Around line 239:</dt>
-<dd>
-
-<p>&#39;=item&#39; outside of any &#39;=over&#39;</p>
-
-</dd>
-<dt id="Around-line-863">Around line 863:</dt>
-<dd>
-
-<p>&#39;=item&#39; outside of any &#39;=over&#39;</p>
 
 </dd>
 </dl>
