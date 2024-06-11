@@ -40,7 +40,7 @@ sub packages_to_install {
     # common packages
     my @packages = ('git-core', 'python3', 'gcc', 'jq');
     if ($host_distri eq 'ubuntu') {
-        push @packages, ('python3-dev', 'python3-pip', 'golang', 'postgresql-server-dev-all');
+        push @packages, ('python3-dev', 'python3-pip', 'golang', 'postgresql-server-dev-all', 'tox');
     } elsif ($host_distri eq 'rhel' && $version > 7) {
         push @packages, ('platform-python-devel', 'python3-pip', 'golang', 'postgresql-devel');
     } elsif ($host_distri =~ /centos|rhel/) {
@@ -101,8 +101,6 @@ sub run {
         foreach my $pkg (@packages) {
             script_retry("apt-get -y install $pkg", timeout => 300);
         }
-        assert_script_run('pip3 --quiet install --upgrade pip', timeout => 600);
-        assert_script_run("pip3 --quiet install tox", timeout => 600);
     } elsif ($host_distri =~ /centos|rhel/) {
         foreach my $pkg (@packages) {
             script_retry("yum install -y $pkg", timeout => 300);
