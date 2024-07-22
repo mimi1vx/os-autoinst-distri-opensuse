@@ -32,7 +32,8 @@ sub run {
     zypper_call("in nvidia-open-driver-G06-signed-cuda-kmp-default kernel-firmware-nvidia-gspx-G06-cuda", quiet => 1);
     $args->{my_instance}->softreboot(timeout => get_var('PUBLIC_CLOUD_REBOOT_TIMEOUT', 600));
     validate_nvidia;
-    # Check gfx nvidia driver
+    validate_script_output('nvidia-smi', sub { m/drm/ }, fail_message => "test");
+    # Check gfx nvidia driver 
     zypper_call("in nvidia-open-driver-G06-signed-kmp-default kernel-firmware-nvidia-gspx-G06 -nvidia-open-driver-G06-signed-cuda-kmp-default -kernel-firmware-nvidia-gspx-G06-cuda", quiet => 1);
     $args->{my_instance}->softreboot(timeout => get_var('PUBLIC_CLOUD_REBOOT_TIMEOUT', 600));
     validate_nvidia;
