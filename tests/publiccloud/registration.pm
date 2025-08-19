@@ -20,14 +20,16 @@ use File::Basename 'basename';
 
 sub run {
     my ($self, $args) = @_;
+    my $instance = $args->{my_instance};
 
     select_host_console();    # select console on the host, not the PC instance
 
-    registercloudguest($args->{my_instance}) if (is_byos() || get_var('PUBLIC_CLOUD_FORCE_REGISTRATION'));
-    register_addons_in_pc($args->{my_instance});
+    registercloudguest($instance) if (is_byos() || get_var('PUBLIC_CLOUD_FORCE_REGISTRATION'));
+    $instance->ssh_script_run(q{'for ((i=60; i>0; i--)) do if (pgrep \'zypper|purge-kernels|Zypp\' > /dev/null); then sleep 10; continue; else sleep 20; break; fi done; pkill \'zypper|Zypp\' || true'},  timeout=>630, no_quote=>1);
+    register_addons_in_pc($instance, 1);
     # Since SLE 15 SP6 CHOST images don't have curl and we need it for testing
     if (is_sle('>15-SP5') && is_container_host()) {
-        $args->{my_instance}->ssh_assert_script_run('sudo zypper -n in --force-resolution -y curl');
+        $instance->ssh_assert_script_run('sudo zypper -n in --force-resolution -y curl');
     }
 }
 

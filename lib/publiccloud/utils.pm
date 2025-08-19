@@ -229,6 +229,7 @@ sub register_addons_in_pc {
     my $remote = $instance->username . '@' . $instance->public_ip;
     # Workaround for bsc#1245220
     my $env = is_sle("=15-SP3") ? "ZYPP_CURL2=1" : "";
+    # try if there is any instance of
     my $cmd = "sudo $env zypper -n --gpg-auto-import-keys ref";
     $instance->ssh_script_retry(cmd => $cmd, timeout => 300, retry => 3, delay => 120);
     for my $addon (@addons) {
