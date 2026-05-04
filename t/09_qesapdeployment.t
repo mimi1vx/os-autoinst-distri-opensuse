@@ -29,8 +29,7 @@ sub create_qesap_prepare_env_mocks_noret {
 }
 
 sub create_qesap_prepare_env_mocks_with_calls {
-    my $called_functions = shift;
-    my $qesap = Test::MockModule->new('sles4sap::qesap::qesapdeployment', no_auto => 1);
+    my ($qesap, $called_functions) = @_;
 
     # then mock functions with some more complex return value
     $called_functions->{qesap_get_file_paths} = 0;
@@ -962,7 +961,7 @@ subtest '[qesap_prepare_env]' => sub {
       qesap_pip_install
       qesap_galaxy_install);
     my $qesap = create_qesap_prepare_env_mocks_noret(\%called_functions, \@mock_func);
-    $qesap = create_qesap_prepare_env_mocks_with_calls(\%called_functions);
+    create_qesap_prepare_env_mocks_with_calls($qesap, \%called_functions);
     my @calls;
     $qesap->redefine(script_run => sub { push @calls, $_[0]; return 0; });
     $qesap->redefine(assert_script_run => sub { push @calls, $_[0]; });
@@ -992,7 +991,7 @@ subtest '[qesap_prepare_env] openqa_variables' => sub {
       qesap_pip_install
       qesap_galaxy_install);
     my $qesap = create_qesap_prepare_env_mocks_noret(\%called_functions, \@mock_func);
-    $qesap = create_qesap_prepare_env_mocks_with_calls(\%called_functions);
+    create_qesap_prepare_env_mocks_with_calls($qesap, \%called_functions);
     my @calls;
     $qesap->redefine(script_run => sub { push @calls, $_[0]; return 0; });
     $qesap->redefine(assert_script_run => sub { push @calls, $_[0]; });
@@ -1016,7 +1015,7 @@ subtest '[qesap_prepare_env] only_configure' => sub {
       qesap_pip_install
       qesap_galaxy_install);
     my $qesap = create_qesap_prepare_env_mocks_noret(\%called_functions, \@mock_func);
-    $qesap = create_qesap_prepare_env_mocks_with_calls(\%called_functions);
+    create_qesap_prepare_env_mocks_with_calls($qesap, \%called_functions);
     my @calls;
     $qesap->redefine(script_run => sub { push @calls, $_[0]; });
     $qesap->redefine(record_info => sub { note(join(' ', 'RECORD_INFO -->', @_)); });
@@ -1035,7 +1034,7 @@ subtest '[qesap_prepare_env] qesap_yaml_replace' => sub {
     my %called_functions;
     my @mock_func = qw(qesap_get_variables);
     my $qesap = create_qesap_prepare_env_mocks_noret(\%called_functions, \@mock_func);
-    $qesap = create_qesap_prepare_env_mocks_with_calls(\%called_functions);
+    create_qesap_prepare_env_mocks_with_calls($qesap, \%called_functions);
     my @calls;
     $qesap->redefine(script_run => sub { push @calls, $_[0]; });
     $called_functions{file_content_replace} = 0;
