@@ -68,7 +68,7 @@ sub analyze_results {
         my $json = Mojo::JSON::decode_json($file->slurp);
         my $logfile = path(bmwqemu::result_dir(), $json->{details}[0]->{text});
         for my $run (@runs) {
-            if ($run->{name} ne '' && index($t->{name}, $run->{name}) != -1) {
+            if ($run->{name} && index($t->{name}, $run->{name}) != -1) {
                 $logfile->append("\n\nimg-proof output:\n" . $run->{output});
                 $logfile->append("\n\nimg-proof log:\n" . $run->{log});
             }
@@ -137,8 +137,9 @@ sub run {
         patch_json $img_proof->{results} if (get_var('PUBLIC_CLOUD_SOFTFAIL_SCAP'));
     }
 
-    upload_logs($img_proof->{logfile}, log_name => basename($img_proof->{logfile}) . ".txt");
-
+    my $log_prefix = 'img_proof_log';
+    upload_logs($img_proof->{logfile}, log_name => sprintf('%s-%s.%s', $log_prefix, basename($img_proof->{logfile}), 'txt'));
+    upload_logs($img_proof->{results}, log_name => sprintf('%s-%s.%s', $log_prefix, basename($img_proof->{results}), 'json'));
     parse_extra_log(IPA => $img_proof->{results});
 
     $instance->ssh_script_run(cmd => 'sudo chmod a+r /var/tmp/report.html || true');
