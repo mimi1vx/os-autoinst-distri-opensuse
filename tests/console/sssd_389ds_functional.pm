@@ -38,7 +38,7 @@ sub install_dependencies($container_engine) {
 
 sub setup_389ds_container ($container_engine) {
 
-    my $pkgs = "awk systemd systemd-sysvinit 389-ds openssl";
+    my $pkgs = "awk systemd 389-ds openssl";
     my $tag = "";
     if (is_opensuse) {
         $tag = (is_tumbleweed) ? "registry.opensuse.org/opensuse/factory/totest/containers/opensuse/tumbleweed" : "registry.opensuse.org/opensuse/leap";
