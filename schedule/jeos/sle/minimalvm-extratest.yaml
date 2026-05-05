@@ -31,11 +31,11 @@ conditional_schedule:
 schedule:
     - '{{bootloader}}'
     - jeos/firstrun
+    - jeos/host_config
     - console/consoletest_setup
     - jeos/record_machine_id
     - console/system_prepare
     - console/force_scheduled_tasks
-    - jeos/host_config
     - jeos/diskusage
     - jeos/build_key
     - console/suseconnect_scc
