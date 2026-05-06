@@ -1413,7 +1413,7 @@ sub pacemaker_version {
 
 sub get_online_string {
     my ($self) = @_;
-    return check_version('>=2.1.7', $self->pacemaker_version(retries => 6, sleep_time => 10)) ? '4' : 'online';
+    return check_version('>=2.1.7', pacemaker_version($self, retries => 6, sleep_time => 10)) ? '4' : 'online';
 }
 
 =head2 saphanasr_showAttr_version
