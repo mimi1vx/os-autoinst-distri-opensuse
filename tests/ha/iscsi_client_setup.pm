@@ -15,6 +15,7 @@ use hacluster;
 use mmapi qw(get_parents get_current_job_id);
 use serial_terminal qw(select_serial_terminal);
 use version_utils qw(is_sle package_version_cmp);
+use package_utils qw(install_package);
 
 =head1 NAME
 
@@ -85,7 +86,6 @@ iSCSI target and LUNs.
 sub request_luns {
     my (%args) = @_;
     foreach (qw(instance jobid numluns)) { die "request_luns: missing [$_] argument" unless $args{$_} }
-    zypper_call 'in nfs-client';    # Make sure nfs-client is installed
     assert_script_run 'mount -t nfs ' . get_required_var('NFS_SUPPORT_SHARE') . ' /mnt';
     assert_script_run "mkdir /mnt/ondemand/$args{instance}_$args{jobid}_$args{numluns}";
     assert_script_run 'umount /mnt';
@@ -113,8 +113,9 @@ sub run {
     record_info 'iscsi initiator pre configuration', script_output('cat /etc/iscsi/initiatorname.iscsi', proceed_on_failure => 1);
     record_info 'rpm-qf', script_output('rpm -qf /etc/iscsi/initiatorname.iscsi', proceed_on_failure => 1);
 
-    # open-iscsi & iscsiuio
-    zypper_call 'in open-iscsi' if (script_run('rpm -q open-iscsi'));
+    # Install dependencies
+    install_package("open-iscsi nfs-client", trup_reboot => 1);
+
     record_info 'iscsi initiator configuration', script_output('cat /etc/iscsi/initiatorname.iscsi');
     record_info 'rpm-qf', script_output('rpm -qf /etc/iscsi/initiatorname.iscsi');
     record_info('open-iscsi version', script_output('rpm -q open-iscsi'));

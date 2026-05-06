@@ -13,6 +13,7 @@ use lockapi;
 use serial_terminal qw(select_serial_terminal);
 use hacluster;
 use utils qw(zypper_call);
+use package_utils qw(install_package);
 
 sub wait_for_password_prompt {
     my %args = @_;
@@ -31,7 +32,8 @@ sub run {
 
     # HA test modules use packages from ClusterTools2. Attempt to install it here and in
     # ha_cluster_init, but continue if it's not possible (retval 104)
-    zypper_call('in ClusterTools2', exitcode => [0, 104]);
+    my $search_rc = zypper_call('se ClusterTools2', exitcode => [0, 104]);
+    install_package("ClusterTools2", trup_reboot => 1) if ($search_rc == 0);
 
     # Qdevice configuration
     if (get_var('QDEVICE')) {
