@@ -50,8 +50,10 @@ conditional_schedule:
         FIRST_BOOT_CONFIG:
             'wizard':
                 - jeos/firstrun
+                - jeos/host_config
             'cloud-init':
                 - installation/first_boot
+                - jeos/host_config
                 - console/system_prepare
             'combustion':
                 - installation/first_boot
