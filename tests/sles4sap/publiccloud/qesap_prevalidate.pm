@@ -81,7 +81,7 @@ sub run {
         # Output the version of tool 'SAPHanaSR-showAttr'
         record_info('SAPHanaSR version number', $self->saphanasr_showAttr_version());
 
-        $online_string //= $self->get_online_string();
+        $online_string //= get_online_string($self);
         $self->wait_for_sync(online_string => $online_string);
 
         # Define initial state for both sites
