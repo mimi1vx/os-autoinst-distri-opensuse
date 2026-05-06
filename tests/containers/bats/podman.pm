@@ -109,6 +109,10 @@ sub run {
     record_info("podman info", script_output("podman info -f json"));
     record_info("podman package version", script_output("rpm -q podman"));
 
+    # The tests expect an exact list of unqualified-search-registries containing "quay.io" and we ship:
+    # unqualified-search-registries = ["registry.opensuse.org", "registry.suse.com", "docker.io"]
+    run_command "rm -f /etc/containers/registries.conf.d/00-suse-registries.conf";
+
     switch_to_user;
 
     record_info("podman rootless", script_output("podman info -f json"));
