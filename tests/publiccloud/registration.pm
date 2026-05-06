@@ -29,7 +29,7 @@ sub run {
 
     # https://progress.opensuse.org/issues/196370 workaround for a known issue on 15-SP5
     if (is_sle('=15-SP5')) {
-        $args->{my_instance}->zypper_call_remote("update -y", retry => 10, delay => 60);
+        $args->{my_instance}->zypper_call_remote("update -y", retry => 10, delay => 60, timeout => 1800);
         $args->{my_instance}->softreboot(timeout => 3600);
     }
 
