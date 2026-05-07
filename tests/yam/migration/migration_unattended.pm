@@ -44,6 +44,12 @@ sub run {
         assert_script_run("echo 'url: " . get_var('SCC_URL') . "' > /etc/SUSEConnect");
     }
 
+    # Add product increment repo
+    if (my $repo_increment = get_var('INCREMENT_REPO')) {
+        $repo_increment .= '/repo/' . (get_var('PRODUCT')) . '-' . (get_var('VERSION')) . '-' . (get_var('ARCH'));
+        zypper_call("ar --refresh $repo_increment Increment_repo");
+    }
+
     # upload logs to know system state before migration
     upload_logs("/boot/grub2/grub.cfg", failok => 1);
     upload_folders(folders => '/etc/zypp/repos.d/');
