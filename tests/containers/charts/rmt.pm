@@ -26,6 +26,10 @@ sub run {
     my ($self) = @_;
 
     select_serial_terminal;
+
+    install_kubectl;
+    install_helm;
+
     my $helm_chart = get_required_var('HELM_CHART');
     my $helm_values = get_var('HELM_CONFIG');
 
