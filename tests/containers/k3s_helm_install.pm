@@ -13,14 +13,15 @@ use Mojo::Base 'containers::basetest';
 use testapi;
 use utils;
 use serial_terminal qw(select_serial_terminal);
-use containers::k8s qw(install_helm install_k3s);
+use containers::k8s qw(install_kubectl install_helm install_k3s);
 
 # Expected to work only on x86_64 and aarch64 due to k3s restrictions and only on Suse hosts due to the usage of zypper
 sub run {
     select_serial_terminal;
 
-    install_k3s();
     systemctl 'disable --now firewalld';
+    install_kubectl();
+    install_k3s();
     install_helm() if get_var("INSTALL_HELM");
 }
 
