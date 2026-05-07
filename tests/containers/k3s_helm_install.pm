@@ -24,4 +24,7 @@ sub run {
     install_helm() if get_var("INSTALL_HELM");
 }
 
+sub test_flags {
+    return {fatal => 1};
+}
 1;
