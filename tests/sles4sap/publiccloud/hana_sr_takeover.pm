@@ -88,7 +88,7 @@ sub run {
     }
 
     # Cache the online_string to avoid repeated SSH calls to pacemaker_version()
-    my $online_string = $self->get_online_string();
+    my $online_string = get_online_string($self);
 
     # Stop/kill/crash HANA DB and wait till SSH is again available with pacemaker running.
     $self->stop_hana(method => $takeover_action, online_string => $online_string);

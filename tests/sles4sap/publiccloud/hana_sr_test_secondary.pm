@@ -94,7 +94,7 @@ sub run {
     $sbd_delay = $self->sbd_delay_formula if $db_action eq 'crash';
 
     # Cache the online_string to avoid repeated SSH calls to pacemaker_version()
-    my $online_string = $self->get_online_string();
+    my $online_string = get_online_string($self);
 
     $self->stop_hana(method => $db_action, online_string => $online_string);
 
