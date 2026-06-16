@@ -44,6 +44,11 @@ sub install_build_deps {
     my @deps = get_required_build_dependencies();
 
     # Remove kernel-default-devel from the list of dependencies since matching kernel version kernel-<flavor>-devel-<ver> package will be added.
+    pc_pkg_call(
+        $instance,
+        'search -s ' . join(' ', @deps),
+        timeout => 300,
+    );
     @deps = grep { $_ ne 'kernel-default-devel' } @deps;
 
     # Sample value: kernel-default-devel-6.12.0-160000.27.1
@@ -55,7 +60,6 @@ sub install_build_deps {
     });
 
     push @deps, $kernel_devel_pkg;
-
     pc_pkg_call(
         $instance,
         'install --no-recommends ' . join(' ', @deps),
